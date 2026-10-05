@@ -1,82 +1,94 @@
 # EVC & Ghost Traffic Attribution Analyzer
 
-## **1. Overview & Purpose**
-**The Problem:** Video advertising (YouTube) creates demand that often doesn't result in an immediate click. Users view an ad, then visit the site later via high-intent channels like **Direct**, **Organic Search**, or **Paid Search**. Standard analytics (GA4) credit the *last click* (e.g., Organic), leaving Video campaigns looking inefficient while "free" channels appear artificially inflated.
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Benfinkels/Cross-Channel-Attribution-Analyzer-EVC-Impact-Model/blob/main/EVC_Session_Attribution.ipynb)
 
-**The Solution:** This tool uses statistical regression to mathematically "unmix" site traffic. It identifies which channels spike in correlation with video views (EVCs), effectively tracing the "Ghost Traffic" back to its true source.
-
----
-
-## **2. Methodology: The Dual-Model Approach**
-We use two distinct statistical models to reveal the truth. Using both provides a range of probable impact rather than a single guess.
-
-### **Model A: NNLS (Non-Negative Least Squares)**
-* **The Logic:** "The Competitive Model" (or The Judge).
-* **How it works:** It forces all traffic channels to compete for credit. If "Direct" and "Organic" spike at the same time, NNLS picks the *single best mathematical fit* and gives it 100% of the credit, forcing the others to zero.
-* **Best for:** Identifying the **Primary Driver**. It is conservative and strict. If NNLS credits a channel, the correlation is undeniable.
-* **Interpretation:** "This specific channel is the main beneficiary of our video ads."
-
-### **Model B: Ridge Regression**
-* **The Logic:** "The Shared Credit Model" (or The Diplomat).
-* **How it works:** It handles **multicollinearity** (channels moving together). It recognizes that a video ad might lift *both* Organic Search and Direct traffic simultaneously. Instead of picking one winner, it splits the credit between them based on signal strength.
-* **Best for:** Identifying the **Halo Effect**. It captures the broad, ambient lift that video provides across the ecosystem.
-* **Interpretation:** "Video is raising the water level for all these channels."
+A statistical modeling suite that quantifies the incremental cross-channel impact of YouTube **Engaged-View Conversions (EVCs)** on high-intent channels (Direct, Organic Search, Paid Search) using **Time-Lagged Non-Negative Least Squares (NNLS)** and **Ridge Regression**.
 
 ---
 
-## **3. Key Features & Definitions**
+## 1. The Attribution Problem
 
-### **Ghost Conversion Rate (The Coefficient)**
-* **Definition:** The multiplier found by the model.
-* **Example:** A coefficient of **0.05** means it takes **20 Sessions** from a specific channel to equal **1 EVC**.
-* **Why it matters:** It proves that video views aren't just "vanity metrics"—they statistically predict future site traffic.
+Video advertising (YouTube) creates top-of-funnel demand that rarely manifests as an immediate click. Users watch a video ad, consider the brand, and later visit the site via high-intent channels such as:
+- **Direct navigation**
+- **Organic Search (Brand)**
+- **Paid Search (CPC)**
 
-### **Auto-Lag Detection**
-* **Definition:** The time delay between a user *viewing* an ad and *visiting* the site.
-* **Process:** The model automatically scans 0–14 days of history. It tests every possible delay and locks onto the day with the highest statistical correlation ($R^2$).
-* **Insight:** A lag of **0 Days** implies impulsive/low-funnel behavior. A lag of **2+ Days** implies consideration/research behavior.
+Standard analytics platforms (like Google Analytics 4) credit the *last non-direct click*, leaving Video campaigns appearing inefficient while "free" or bottom-funnel channels appear artificially inflated.
 
-### **CausalImpact (Incremental Lift)**
-* **Definition:** A counterfactual analysis answering, *"What would have happened if we never ran ads?"*
-* **Method:** It learns the normal behavior of your traffic (using pre-campaign data or control markets) and projects a baseline. The difference between this baseline and reality is the **True Incremental Lift**.
+**The Solution:** This tool mathematically "unmixes" site traffic across channels. It scans time lags between 0 and 14 days and detects which channels statistically rise and fall in correlation with video view spikes, effectively tracing "Ghost Traffic" back to its true acquisition origin.
 
 ---
 
-## **4. Step-by-Step User Guide**
+## 2. Methodology: Dual-Model Approach
 
-### **Step 1: Data Ingestion**
-* **Input:** Upload two CSV files:
-    1.  **Session Data (The Effect):** GA4 export (Date, Channel, Sessions).
-    2.  **Ad Data (The Cause):** Google Ads export (Date, Engaged-View Conversions).
-* **Automation:** The tool detects date formats, cleans "messy" headers, and pivots the data into a time-series matrix automatically.
+| Model | Nickname | Statistical Method | Best For | Interpretation |
+|---|---|---|---|---|
+| **Model A** | *The Judge* | **Non-Negative Least Squares (NNLS)** | Identifying the **Primary Driver** | Conservative & strict. Forces channels to compete for credit ($w_i \ge 0$). |
+| **Model B** | *The Diplomat* | **Ridge Regression (L2 penalty)** | Measuring the **Halo Effect** | Captures multi-channel lift and collinearity across channels. |
 
-### **Step 2: Training the Models**
-* **NNLS:** Run to find the sharpest, most direct correlations. (Good for "Spiky" channels like Push Notifications).
-* **Ridge:** Run to find the broader, smoother trends. (Good for "Base Load" channels like Google CPC).
-
-### **Step 3: Visualization & Validation**
-* **The Stack Plot:** Visualizes the model's accuracy.
-* **Validation Check:** Look at the **Black Line** (Actual EVCs) vs. the **Colored Stack** (Predicted Traffic). If the stack rises and falls exactly when the black line does, the model is valid.
-    * *Accuracy Score:* Represented as a percentage (e.g., "94.2% Match").
-
-### **Step 4: Financial Impact (ROI)**
-* **Ghost Revenue:** The estimated revenue generated by video but credited to other channels.
-    * *Formula:* `Attributed EVCs * Average Order Value (AOV)`
-* **Media Value Created:** The money saved by acquiring these users via video instead of expensive bottom-funnel clicks.
-    * *Formula:* `Attributed EVCs * Target CPA`
+### Auto-Lag Detection
+Rather than assuming an arbitrary lookback window, the tool automatically tests lags from $t=0$ to $t=14$ days and locks onto the delay that optimizes predictive fit ($R^2$).
 
 ---
 
-## **5. Interpreting the Results (Cheat Sheet)**
+## 3. Quickstart
 
-| Observation | What it likely means |
-| :--- | :--- |
-| **NNLS & Ridge show the same top channel.** | **High Confidence.** This channel is undeniably driving your video performance. |
-| **NNLS credits "Push" / Ridge credits "Direct".** | **Volume Bias.** "Push" is likely the true driver of the *spikes*, but "Direct" has so much volume that Ridge gives it credit for the *baseline*. Trust NNLS for the specific campaign impact. |
-| **High Lag (3+ Days).** | **High Consideration.** Users are watching, thinking, and coming back later. Retargeting is crucial here. |
-| **Low Accuracy (<50%).** | **Weak Signal.** The video campaign spend may be too low to create a detectable ripple in site traffic, or the creative is not driving action. |
+### Option A: Run in Google Colab (One-Click)
+Click the badge above or open [`EVC_Session_Attribution.ipynb`](EVC_Session_Attribution.ipynb) directly in Google Colab.
+
+### Option B: Run Locally
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Benfinkels/Cross-Channel-Attribution-Analyzer-EVC-Impact-Model.git
+   cd Cross-Channel-Attribution-Analyzer-EVC-Impact-Model
+   ```
+
+2. **Set up a Python environment (Python 3.10+):**
+   ```bash
+   python -m venv .venv
+   # Windows:
+   .venv\Scripts\activate
+   # macOS/Linux:
+   source .venv/bin/activate
+
+   pip install -r requirements.txt
+   ```
+
+3. **Launch Jupyter Lab or Notebook:**
+   ```bash
+   jupyter lab
+   ```
+   Open `EVC_Session_Attribution.ipynb` and run the cells. Ready-to-use sample datasets (`sample_ga4_sessions.csv` and `sample_google_ads_evc.csv`) are bundled in the repository so the entire analysis runs immediately out of the box.
 
 ---
 
-## **6. Final Output: The Executive Report**
-The tool bundles all findings—charts, data tables, and ROI calculations—into a single **HTML Dashboard**. This file is self-contained and can be emailed directly to stakeholders, serving as the final "Proof of Performance."
+## 4. Using Your Own Data
+
+The notebook includes a smart auto-parser that accepts GA4 and Google Ads exports in **Long**, **Wide**, or **Pivot** formats:
+
+1. **Session Data (Effect):** Export from GA4 with:
+   - `Date` (e.g. `2024-01-15`)
+   - `Session source / medium` or `Channel`
+   - `Sessions`
+2. **Ad Data (Cause):** Export from Google Ads with:
+   - `Date`
+   - `Engaged-view conversions` or `Conversions`
+
+Upload your CSVs using the interactive loader or drop them into the repository folder.
+
+---
+
+## 5. Outputs & Deliverables
+
+- **`EVC_Competitive_Model.csv`**: Coefficients and attributed conversion counts per channel from NNLS.
+- **`EVC_Competitive_Model_Ridge.csv`**: Coefficients and attributed conversions from Ridge Regression.
+- **Interactive Dual Stack Plots**: Stacked time series showing predicted channel volume aligned against actual reported EVCs.
+- **Ghost ROI Analysis**: Translates attributed conversions into monetary value using Average Order Value (AOV) and Target CPA.
+- **`Attribution_Master_Report.html`**: A standalone, self-contained executive dashboard report ready to share with stakeholders.
+
+---
+
+## License
+
+MIT License.

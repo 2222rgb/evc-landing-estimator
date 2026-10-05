@@ -1,0 +1,9 @@
+.venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+*.html
+*.csv
+!sample_ga4_sessions.csv
+!sample_google_ads_evc.csv
+.DS_Store
