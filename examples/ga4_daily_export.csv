@@ -1,0 +1,1085 @@
+# ----------------------------------------
+# Acme Demo Property - GA4 Key Events by Default Channel Group
+# Attribution: Paid and organic last click
+# ----------------------------------------
+Date,Session default channel group,Key events
+2026-01-01,Direct,68
+2026-01-01,Paid Search,74
+2026-01-01,Organic Search,92
+2026-01-01,Affiliates,22
+2026-01-01,Email,33
+2026-01-01,Paid Social,17
+2026-01-02,Direct,63
+2026-01-02,Paid Search,78
+2026-01-02,Organic Search,83
+2026-01-02,Affiliates,31
+2026-01-02,Email,25
+2026-01-02,Paid Social,19
+2026-01-03,Direct,72
+2026-01-03,Paid Search,78
+2026-01-03,Organic Search,72
+2026-01-03,Affiliates,28
+2026-01-03,Email,21
+2026-01-03,Paid Social,22
+2026-01-04,Direct,83
+2026-01-04,Paid Search,69
+2026-01-04,Organic Search,61
+2026-01-04,Affiliates,28
+2026-01-04,Email,24
+2026-01-04,Paid Social,25
+2026-01-05,Direct,68
+2026-01-05,Paid Search,88
+2026-01-05,Organic Search,84
+2026-01-05,Affiliates,19
+2026-01-05,Email,21
+2026-01-05,Paid Social,12
+2026-01-06,Direct,90
+2026-01-06,Paid Search,104
+2026-01-06,Organic Search,99
+2026-01-06,Affiliates,23
+2026-01-06,Email,31
+2026-01-06,Paid Social,17
+2026-01-07,Direct,81
+2026-01-07,Paid Search,88
+2026-01-07,Organic Search,91
+2026-01-07,Affiliates,20
+2026-01-07,Email,20
+2026-01-07,Paid Social,21
+2026-01-08,Direct,89
+2026-01-08,Paid Search,86
+2026-01-08,Organic Search,94
+2026-01-08,Affiliates,27
+2026-01-08,Email,18
+2026-01-08,Paid Social,16
+2026-01-09,Direct,71
+2026-01-09,Paid Search,76
+2026-01-09,Organic Search,82
+2026-01-09,Affiliates,17
+2026-01-09,Email,36
+2026-01-09,Paid Social,17
+2026-01-10,Direct,70
+2026-01-10,Paid Search,52
+2026-01-10,Organic Search,76
+2026-01-10,Affiliates,24
+2026-01-10,Email,24
+2026-01-10,Paid Social,16
+2026-01-11,Direct,67
+2026-01-11,Paid Search,78
+2026-01-11,Organic Search,87
+2026-01-11,Affiliates,21
+2026-01-11,Email,14
+2026-01-11,Paid Social,23
+2026-01-12,Direct,69
+2026-01-12,Paid Search,85
+2026-01-12,Organic Search,81
+2026-01-12,Affiliates,20
+2026-01-12,Email,19
+2026-01-12,Paid Social,14
+2026-01-13,Direct,85
+2026-01-13,Paid Search,95
+2026-01-13,Organic Search,107
+2026-01-13,Affiliates,32
+2026-01-13,Email,30
+2026-01-13,Paid Social,27
+2026-01-14,Direct,84
+2026-01-14,Paid Search,92
+2026-01-14,Organic Search,106
+2026-01-14,Affiliates,23
+2026-01-14,Email,27
+2026-01-14,Paid Social,17
+2026-01-15,Direct,74
+2026-01-15,Paid Search,83
+2026-01-15,Organic Search,71
+2026-01-15,Affiliates,23
+2026-01-15,Email,37
+2026-01-15,Paid Social,29
+2026-01-16,Direct,79
+2026-01-16,Paid Search,62
+2026-01-16,Organic Search,84
+2026-01-16,Affiliates,25
+2026-01-16,Email,32
+2026-01-16,Paid Social,15
+2026-01-17,Direct,60
+2026-01-17,Paid Search,61
+2026-01-17,Organic Search,59
+2026-01-17,Affiliates,17
+2026-01-17,Email,19
+2026-01-17,Paid Social,13
+2026-01-18,Direct,58
+2026-01-18,Paid Search,63
+2026-01-18,Organic Search,76
+2026-01-18,Affiliates,15
+2026-01-18,Email,17
+2026-01-18,Paid Social,21
+2026-01-19,Direct,73
+2026-01-19,Paid Search,86
+2026-01-19,Organic Search,87
+2026-01-19,Affiliates,21
+2026-01-19,Email,19
+2026-01-19,Paid Social,14
+2026-01-20,Direct,68
+2026-01-20,Paid Search,90
+2026-01-20,Organic Search,96
+2026-01-20,Affiliates,20
+2026-01-20,Email,39
+2026-01-20,Paid Social,12
+2026-01-21,Direct,66
+2026-01-21,Paid Search,78
+2026-01-21,Organic Search,98
+2026-01-21,Affiliates,23
+2026-01-21,Email,23
+2026-01-21,Paid Social,19
+2026-01-22,Direct,80
+2026-01-22,Paid Search,87
+2026-01-22,Organic Search,92
+2026-01-22,Affiliates,21
+2026-01-22,Email,36
+2026-01-22,Paid Social,22
+2026-01-23,Direct,81
+2026-01-23,Paid Search,85
+2026-01-23,Organic Search,77
+2026-01-23,Affiliates,25
+2026-01-23,Email,19
+2026-01-23,Paid Social,16
+2026-01-24,Direct,68
+2026-01-24,Paid Search,80
+2026-01-24,Organic Search,65
+2026-01-24,Affiliates,23
+2026-01-24,Email,24
+2026-01-24,Paid Social,15
+2026-01-25,Direct,75
+2026-01-25,Paid Search,70
+2026-01-25,Organic Search,85
+2026-01-25,Affiliates,23
+2026-01-25,Email,23
+2026-01-25,Paid Social,14
+2026-01-26,Direct,93
+2026-01-26,Paid Search,89
+2026-01-26,Organic Search,87
+2026-01-26,Affiliates,25
+2026-01-26,Email,20
+2026-01-26,Paid Social,12
+2026-01-27,Direct,73
+2026-01-27,Paid Search,93
+2026-01-27,Organic Search,98
+2026-01-27,Affiliates,36
+2026-01-27,Email,23
+2026-01-27,Paid Social,21
+2026-01-28,Direct,73
+2026-01-28,Paid Search,102
+2026-01-28,Organic Search,94
+2026-01-28,Affiliates,20
+2026-01-28,Email,20
+2026-01-28,Paid Social,12
+2026-01-29,Direct,98
+2026-01-29,Paid Search,77
+2026-01-29,Organic Search,83
+2026-01-29,Affiliates,19
+2026-01-29,Email,28
+2026-01-29,Paid Social,9
+2026-01-30,Direct,72
+2026-01-30,Paid Search,82
+2026-01-30,Organic Search,83
+2026-01-30,Affiliates,24
+2026-01-30,Email,26
+2026-01-30,Paid Social,17
+2026-01-31,Direct,85
+2026-01-31,Paid Search,76
+2026-01-31,Organic Search,69
+2026-01-31,Affiliates,36
+2026-01-31,Email,24
+2026-01-31,Paid Social,16
+2026-02-01,Direct,52
+2026-02-01,Paid Search,92
+2026-02-01,Organic Search,59
+2026-02-01,Affiliates,24
+2026-02-01,Email,19
+2026-02-01,Paid Social,20
+2026-02-02,Direct,59
+2026-02-02,Paid Search,85
+2026-02-02,Organic Search,81
+2026-02-02,Affiliates,20
+2026-02-02,Email,23
+2026-02-02,Paid Social,17
+2026-02-03,Direct,80
+2026-02-03,Paid Search,74
+2026-02-03,Organic Search,114
+2026-02-03,Affiliates,32
+2026-02-03,Email,28
+2026-02-03,Paid Social,15
+2026-02-04,Direct,59
+2026-02-04,Paid Search,96
+2026-02-04,Organic Search,88
+2026-02-04,Affiliates,23
+2026-02-04,Email,25
+2026-02-04,Paid Social,19
+2026-02-05,Direct,70
+2026-02-05,Paid Search,86
+2026-02-05,Organic Search,81
+2026-02-05,Affiliates,30
+2026-02-05,Email,30
+2026-02-05,Paid Social,19
+2026-02-06,Direct,67
+2026-02-06,Paid Search,64
+2026-02-06,Organic Search,82
+2026-02-06,Affiliates,26
+2026-02-06,Email,20
+2026-02-06,Paid Social,18
+2026-02-07,Direct,55
+2026-02-07,Paid Search,58
+2026-02-07,Organic Search,80
+2026-02-07,Affiliates,23
+2026-02-07,Email,21
+2026-02-07,Paid Social,18
+2026-02-08,Direct,56
+2026-02-08,Paid Search,65
+2026-02-08,Organic Search,58
+2026-02-08,Affiliates,21
+2026-02-08,Email,29
+2026-02-08,Paid Social,16
+2026-02-09,Direct,58
+2026-02-09,Paid Search,85
+2026-02-09,Organic Search,90
+2026-02-09,Affiliates,22
+2026-02-09,Email,32
+2026-02-09,Paid Social,18
+2026-02-10,Direct,70
+2026-02-10,Paid Search,91
+2026-02-10,Organic Search,90
+2026-02-10,Affiliates,18
+2026-02-10,Email,32
+2026-02-10,Paid Social,17
+2026-02-11,Direct,67
+2026-02-11,Paid Search,94
+2026-02-11,Organic Search,90
+2026-02-11,Affiliates,31
+2026-02-11,Email,25
+2026-02-11,Paid Social,20
+2026-02-12,Direct,81
+2026-02-12,Paid Search,78
+2026-02-12,Organic Search,89
+2026-02-12,Affiliates,26
+2026-02-12,Email,42
+2026-02-12,Paid Social,15
+2026-02-13,Direct,69
+2026-02-13,Paid Search,64
+2026-02-13,Organic Search,87
+2026-02-13,Affiliates,17
+2026-02-13,Email,23
+2026-02-13,Paid Social,16
+2026-02-14,Direct,67
+2026-02-14,Paid Search,46
+2026-02-14,Organic Search,84
+2026-02-14,Affiliates,22
+2026-02-14,Email,31
+2026-02-14,Paid Social,18
+2026-02-15,Direct,76
+2026-02-15,Paid Search,72
+2026-02-15,Organic Search,74
+2026-02-15,Affiliates,21
+2026-02-15,Email,15
+2026-02-15,Paid Social,15
+2026-02-16,Direct,93
+2026-02-16,Paid Search,85
+2026-02-16,Organic Search,79
+2026-02-16,Affiliates,25
+2026-02-16,Email,23
+2026-02-16,Paid Social,16
+2026-02-17,Direct,83
+2026-02-17,Paid Search,96
+2026-02-17,Organic Search,112
+2026-02-17,Affiliates,36
+2026-02-17,Email,38
+2026-02-17,Paid Social,10
+2026-02-18,Direct,80
+2026-02-18,Paid Search,80
+2026-02-18,Organic Search,84
+2026-02-18,Affiliates,31
+2026-02-18,Email,28
+2026-02-18,Paid Social,15
+2026-02-19,Direct,73
+2026-02-19,Paid Search,80
+2026-02-19,Organic Search,78
+2026-02-19,Affiliates,35
+2026-02-19,Email,26
+2026-02-19,Paid Social,14
+2026-02-20,Direct,51
+2026-02-20,Paid Search,89
+2026-02-20,Organic Search,75
+2026-02-20,Affiliates,22
+2026-02-20,Email,19
+2026-02-20,Paid Social,18
+2026-02-21,Direct,73
+2026-02-21,Paid Search,72
+2026-02-21,Organic Search,68
+2026-02-21,Affiliates,41
+2026-02-21,Email,16
+2026-02-21,Paid Social,15
+2026-02-22,Direct,68
+2026-02-22,Paid Search,82
+2026-02-22,Organic Search,72
+2026-02-22,Affiliates,26
+2026-02-22,Email,12
+2026-02-22,Paid Social,17
+2026-02-23,Direct,89
+2026-02-23,Paid Search,101
+2026-02-23,Organic Search,95
+2026-02-23,Affiliates,25
+2026-02-23,Email,17
+2026-02-23,Paid Social,25
+2026-02-24,Direct,94
+2026-02-24,Paid Search,85
+2026-02-24,Organic Search,104
+2026-02-24,Affiliates,25
+2026-02-24,Email,37
+2026-02-24,Paid Social,16
+2026-02-25,Direct,77
+2026-02-25,Paid Search,77
+2026-02-25,Organic Search,91
+2026-02-25,Affiliates,22
+2026-02-25,Email,20
+2026-02-25,Paid Social,24
+2026-02-26,Direct,87
+2026-02-26,Paid Search,88
+2026-02-26,Organic Search,88
+2026-02-26,Affiliates,23
+2026-02-26,Email,29
+2026-02-26,Paid Social,14
+2026-02-27,Direct,76
+2026-02-27,Paid Search,77
+2026-02-27,Organic Search,77
+2026-02-27,Affiliates,35
+2026-02-27,Email,27
+2026-02-27,Paid Social,21
+2026-02-28,Direct,54
+2026-02-28,Paid Search,60
+2026-02-28,Organic Search,75
+2026-02-28,Affiliates,27
+2026-02-28,Email,27
+2026-02-28,Paid Social,19
+2026-03-01,Direct,67
+2026-03-01,Paid Search,68
+2026-03-01,Organic Search,69
+2026-03-01,Affiliates,23
+2026-03-01,Email,18
+2026-03-01,Paid Social,20
+2026-03-02,Direct,72
+2026-03-02,Paid Search,82
+2026-03-02,Organic Search,77
+2026-03-02,Affiliates,30
+2026-03-02,Email,22
+2026-03-02,Paid Social,15
+2026-03-03,Direct,70
+2026-03-03,Paid Search,71
+2026-03-03,Organic Search,96
+2026-03-03,Affiliates,19
+2026-03-03,Email,28
+2026-03-03,Paid Social,12
+2026-03-04,Direct,61
+2026-03-04,Paid Search,95
+2026-03-04,Organic Search,107
+2026-03-04,Affiliates,23
+2026-03-04,Email,24
+2026-03-04,Paid Social,21
+2026-03-05,Direct,70
+2026-03-05,Paid Search,79
+2026-03-05,Organic Search,105
+2026-03-05,Affiliates,20
+2026-03-05,Email,25
+2026-03-05,Paid Social,18
+2026-03-06,Direct,66
+2026-03-06,Paid Search,76
+2026-03-06,Organic Search,60
+2026-03-06,Affiliates,26
+2026-03-06,Email,24
+2026-03-06,Paid Social,21
+2026-03-07,Direct,69
+2026-03-07,Paid Search,73
+2026-03-07,Organic Search,72
+2026-03-07,Affiliates,30
+2026-03-07,Email,20
+2026-03-07,Paid Social,25
+2026-03-08,Direct,63
+2026-03-08,Paid Search,70
+2026-03-08,Organic Search,72
+2026-03-08,Affiliates,33
+2026-03-08,Email,25
+2026-03-08,Paid Social,23
+2026-03-09,Direct,88
+2026-03-09,Paid Search,88
+2026-03-09,Organic Search,92
+2026-03-09,Affiliates,27
+2026-03-09,Email,26
+2026-03-09,Paid Social,16
+2026-03-10,Direct,70
+2026-03-10,Paid Search,86
+2026-03-10,Organic Search,83
+2026-03-10,Affiliates,30
+2026-03-10,Email,33
+2026-03-10,Paid Social,15
+2026-03-11,Direct,81
+2026-03-11,Paid Search,79
+2026-03-11,Organic Search,107
+2026-03-11,Affiliates,20
+2026-03-11,Email,30
+2026-03-11,Paid Social,14
+2026-03-12,Direct,85
+2026-03-12,Paid Search,89
+2026-03-12,Organic Search,101
+2026-03-12,Affiliates,30
+2026-03-12,Email,36
+2026-03-12,Paid Social,18
+2026-03-13,Direct,83
+2026-03-13,Paid Search,61
+2026-03-13,Organic Search,87
+2026-03-13,Affiliates,32
+2026-03-13,Email,31
+2026-03-13,Paid Social,18
+2026-03-14,Direct,73
+2026-03-14,Paid Search,64
+2026-03-14,Organic Search,80
+2026-03-14,Affiliates,30
+2026-03-14,Email,19
+2026-03-14,Paid Social,25
+2026-03-15,Direct,69
+2026-03-15,Paid Search,69
+2026-03-15,Organic Search,94
+2026-03-15,Affiliates,23
+2026-03-15,Email,26
+2026-03-15,Paid Social,26
+2026-03-16,Direct,83
+2026-03-16,Paid Search,99
+2026-03-16,Organic Search,112
+2026-03-16,Affiliates,30
+2026-03-16,Email,19
+2026-03-16,Paid Social,17
+2026-03-17,Direct,81
+2026-03-17,Paid Search,92
+2026-03-17,Organic Search,78
+2026-03-17,Affiliates,29
+2026-03-17,Email,31
+2026-03-17,Paid Social,21
+2026-03-18,Direct,79
+2026-03-18,Paid Search,96
+2026-03-18,Organic Search,99
+2026-03-18,Affiliates,29
+2026-03-18,Email,21
+2026-03-18,Paid Social,24
+2026-03-19,Direct,74
+2026-03-19,Paid Search,89
+2026-03-19,Organic Search,89
+2026-03-19,Affiliates,17
+2026-03-19,Email,30
+2026-03-19,Paid Social,19
+2026-03-20,Direct,68
+2026-03-20,Paid Search,85
+2026-03-20,Organic Search,75
+2026-03-20,Affiliates,22
+2026-03-20,Email,28
+2026-03-20,Paid Social,15
+2026-03-21,Direct,65
+2026-03-21,Paid Search,62
+2026-03-21,Organic Search,68
+2026-03-21,Affiliates,27
+2026-03-21,Email,25
+2026-03-21,Paid Social,21
+2026-03-22,Direct,62
+2026-03-22,Paid Search,81
+2026-03-22,Organic Search,64
+2026-03-22,Affiliates,22
+2026-03-22,Email,22
+2026-03-22,Paid Social,11
+2026-03-23,Direct,71
+2026-03-23,Paid Search,98
+2026-03-23,Organic Search,103
+2026-03-23,Affiliates,17
+2026-03-23,Email,25
+2026-03-23,Paid Social,12
+2026-03-24,Direct,76
+2026-03-24,Paid Search,93
+2026-03-24,Organic Search,88
+2026-03-24,Affiliates,32
+2026-03-24,Email,36
+2026-03-24,Paid Social,18
+2026-03-25,Direct,74
+2026-03-25,Paid Search,87
+2026-03-25,Organic Search,109
+2026-03-25,Affiliates,22
+2026-03-25,Email,23
+2026-03-25,Paid Social,23
+2026-03-26,Direct,83
+2026-03-26,Paid Search,88
+2026-03-26,Organic Search,93
+2026-03-26,Affiliates,13
+2026-03-26,Email,33
+2026-03-26,Paid Social,11
+2026-03-27,Direct,79
+2026-03-27,Paid Search,73
+2026-03-27,Organic Search,82
+2026-03-27,Affiliates,31
+2026-03-27,Email,32
+2026-03-27,Paid Social,16
+2026-03-28,Direct,82
+2026-03-28,Paid Search,72
+2026-03-28,Organic Search,58
+2026-03-28,Affiliates,28
+2026-03-28,Email,26
+2026-03-28,Paid Social,22
+2026-03-29,Direct,85
+2026-03-29,Paid Search,60
+2026-03-29,Organic Search,73
+2026-03-29,Affiliates,25
+2026-03-29,Email,27
+2026-03-29,Paid Social,27
+2026-03-30,Direct,78
+2026-03-30,Paid Search,111
+2026-03-30,Organic Search,98
+2026-03-30,Affiliates,26
+2026-03-30,Email,22
+2026-03-30,Paid Social,15
+2026-03-31,Direct,96
+2026-03-31,Paid Search,87
+2026-03-31,Organic Search,99
+2026-03-31,Affiliates,19
+2026-03-31,Email,34
+2026-03-31,Paid Social,11
+2026-04-01,Direct,81
+2026-04-01,Paid Search,84
+2026-04-01,Organic Search,93
+2026-04-01,Affiliates,28
+2026-04-01,Email,24
+2026-04-01,Paid Social,14
+2026-04-02,Direct,81
+2026-04-02,Paid Search,84
+2026-04-02,Organic Search,95
+2026-04-02,Affiliates,32
+2026-04-02,Email,37
+2026-04-02,Paid Social,11
+2026-04-03,Direct,77
+2026-04-03,Paid Search,77
+2026-04-03,Organic Search,101
+2026-04-03,Affiliates,20
+2026-04-03,Email,31
+2026-04-03,Paid Social,13
+2026-04-04,Direct,81
+2026-04-04,Paid Search,56
+2026-04-04,Organic Search,84
+2026-04-04,Affiliates,22
+2026-04-04,Email,17
+2026-04-04,Paid Social,13
+2026-04-05,Direct,87
+2026-04-05,Paid Search,67
+2026-04-05,Organic Search,83
+2026-04-05,Affiliates,21
+2026-04-05,Email,25
+2026-04-05,Paid Social,14
+2026-04-06,Direct,72
+2026-04-06,Paid Search,91
+2026-04-06,Organic Search,111
+2026-04-06,Affiliates,34
+2026-04-06,Email,28
+2026-04-06,Paid Social,12
+2026-04-07,Direct,81
+2026-04-07,Paid Search,94
+2026-04-07,Organic Search,94
+2026-04-07,Affiliates,25
+2026-04-07,Email,30
+2026-04-07,Paid Social,11
+2026-04-08,Direct,95
+2026-04-08,Paid Search,76
+2026-04-08,Organic Search,97
+2026-04-08,Affiliates,25
+2026-04-08,Email,22
+2026-04-08,Paid Social,19
+2026-04-09,Direct,73
+2026-04-09,Paid Search,100
+2026-04-09,Organic Search,93
+2026-04-09,Affiliates,22
+2026-04-09,Email,31
+2026-04-09,Paid Social,17
+2026-04-10,Direct,69
+2026-04-10,Paid Search,78
+2026-04-10,Organic Search,73
+2026-04-10,Affiliates,33
+2026-04-10,Email,21
+2026-04-10,Paid Social,15
+2026-04-11,Direct,60
+2026-04-11,Paid Search,89
+2026-04-11,Organic Search,78
+2026-04-11,Affiliates,24
+2026-04-11,Email,27
+2026-04-11,Paid Social,11
+2026-04-12,Direct,61
+2026-04-12,Paid Search,75
+2026-04-12,Organic Search,74
+2026-04-12,Affiliates,18
+2026-04-12,Email,23
+2026-04-12,Paid Social,17
+2026-04-13,Direct,67
+2026-04-13,Paid Search,79
+2026-04-13,Organic Search,84
+2026-04-13,Affiliates,18
+2026-04-13,Email,19
+2026-04-13,Paid Social,14
+2026-04-14,Direct,62
+2026-04-14,Paid Search,84
+2026-04-14,Organic Search,85
+2026-04-14,Affiliates,28
+2026-04-14,Email,32
+2026-04-14,Paid Social,16
+2026-04-15,Direct,76
+2026-04-15,Paid Search,91
+2026-04-15,Organic Search,90
+2026-04-15,Affiliates,21
+2026-04-15,Email,19
+2026-04-15,Paid Social,12
+2026-04-16,Direct,93
+2026-04-16,Paid Search,97
+2026-04-16,Organic Search,95
+2026-04-16,Affiliates,28
+2026-04-16,Email,30
+2026-04-16,Paid Social,16
+2026-04-17,Direct,63
+2026-04-17,Paid Search,99
+2026-04-17,Organic Search,91
+2026-04-17,Affiliates,39
+2026-04-17,Email,27
+2026-04-17,Paid Social,15
+2026-04-18,Direct,79
+2026-04-18,Paid Search,67
+2026-04-18,Organic Search,78
+2026-04-18,Affiliates,42
+2026-04-18,Email,23
+2026-04-18,Paid Social,14
+2026-04-19,Direct,58
+2026-04-19,Paid Search,64
+2026-04-19,Organic Search,70
+2026-04-19,Affiliates,16
+2026-04-19,Email,26
+2026-04-19,Paid Social,13
+2026-04-20,Direct,85
+2026-04-20,Paid Search,91
+2026-04-20,Organic Search,91
+2026-04-20,Affiliates,24
+2026-04-20,Email,30
+2026-04-20,Paid Social,17
+2026-04-21,Direct,75
+2026-04-21,Paid Search,107
+2026-04-21,Organic Search,112
+2026-04-21,Affiliates,30
+2026-04-21,Email,32
+2026-04-21,Paid Social,17
+2026-04-22,Direct,81
+2026-04-22,Paid Search,85
+2026-04-22,Organic Search,99
+2026-04-22,Affiliates,27
+2026-04-22,Email,23
+2026-04-22,Paid Social,16
+2026-04-23,Direct,89
+2026-04-23,Paid Search,89
+2026-04-23,Organic Search,97
+2026-04-23,Affiliates,26
+2026-04-23,Email,31
+2026-04-23,Paid Social,20
+2026-04-24,Direct,66
+2026-04-24,Paid Search,91
+2026-04-24,Organic Search,87
+2026-04-24,Affiliates,36
+2026-04-24,Email,24
+2026-04-24,Paid Social,14
+2026-04-25,Direct,65
+2026-04-25,Paid Search,58
+2026-04-25,Organic Search,65
+2026-04-25,Affiliates,24
+2026-04-25,Email,16
+2026-04-25,Paid Social,25
+2026-04-26,Direct,92
+2026-04-26,Paid Search,70
+2026-04-26,Organic Search,64
+2026-04-26,Affiliates,30
+2026-04-26,Email,21
+2026-04-26,Paid Social,27
+2026-04-27,Direct,77
+2026-04-27,Paid Search,80
+2026-04-27,Organic Search,81
+2026-04-27,Affiliates,28
+2026-04-27,Email,20
+2026-04-27,Paid Social,18
+2026-04-28,Direct,84
+2026-04-28,Paid Search,93
+2026-04-28,Organic Search,92
+2026-04-28,Affiliates,31
+2026-04-28,Email,27
+2026-04-28,Paid Social,23
+2026-04-29,Direct,94
+2026-04-29,Paid Search,86
+2026-04-29,Organic Search,91
+2026-04-29,Affiliates,30
+2026-04-29,Email,27
+2026-04-29,Paid Social,15
+2026-04-30,Direct,79
+2026-04-30,Paid Search,88
+2026-04-30,Organic Search,98
+2026-04-30,Affiliates,26
+2026-04-30,Email,37
+2026-04-30,Paid Social,18
+2026-05-01,Direct,62
+2026-05-01,Paid Search,74
+2026-05-01,Organic Search,85
+2026-05-01,Affiliates,24
+2026-05-01,Email,26
+2026-05-01,Paid Social,17
+2026-05-02,Direct,72
+2026-05-02,Paid Search,66
+2026-05-02,Organic Search,75
+2026-05-02,Affiliates,21
+2026-05-02,Email,19
+2026-05-02,Paid Social,24
+2026-05-03,Direct,67
+2026-05-03,Paid Search,67
+2026-05-03,Organic Search,85
+2026-05-03,Affiliates,17
+2026-05-03,Email,19
+2026-05-03,Paid Social,23
+2026-05-04,Direct,67
+2026-05-04,Paid Search,66
+2026-05-04,Organic Search,100
+2026-05-04,Affiliates,33
+2026-05-04,Email,14
+2026-05-04,Paid Social,19
+2026-05-05,Direct,83
+2026-05-05,Paid Search,80
+2026-05-05,Organic Search,98
+2026-05-05,Affiliates,28
+2026-05-05,Email,31
+2026-05-05,Paid Social,23
+2026-05-06,Direct,66
+2026-05-06,Paid Search,91
+2026-05-06,Organic Search,87
+2026-05-06,Affiliates,26
+2026-05-06,Email,17
+2026-05-06,Paid Social,13
+2026-05-07,Direct,60
+2026-05-07,Paid Search,74
+2026-05-07,Organic Search,86
+2026-05-07,Affiliates,22
+2026-05-07,Email,27
+2026-05-07,Paid Social,14
+2026-05-08,Direct,86
+2026-05-08,Paid Search,82
+2026-05-08,Organic Search,81
+2026-05-08,Affiliates,27
+2026-05-08,Email,22
+2026-05-08,Paid Social,21
+2026-05-09,Direct,69
+2026-05-09,Paid Search,67
+2026-05-09,Organic Search,91
+2026-05-09,Affiliates,22
+2026-05-09,Email,20
+2026-05-09,Paid Social,18
+2026-05-10,Direct,60
+2026-05-10,Paid Search,68
+2026-05-10,Organic Search,81
+2026-05-10,Affiliates,26
+2026-05-10,Email,28
+2026-05-10,Paid Social,23
+2026-05-11,Direct,85
+2026-05-11,Paid Search,87
+2026-05-11,Organic Search,95
+2026-05-11,Affiliates,20
+2026-05-11,Email,24
+2026-05-11,Paid Social,25
+2026-05-12,Direct,84
+2026-05-12,Paid Search,82
+2026-05-12,Organic Search,100
+2026-05-12,Affiliates,22
+2026-05-12,Email,25
+2026-05-12,Paid Social,19
+2026-05-13,Direct,76
+2026-05-13,Paid Search,98
+2026-05-13,Organic Search,87
+2026-05-13,Affiliates,38
+2026-05-13,Email,20
+2026-05-13,Paid Social,18
+2026-05-14,Direct,97
+2026-05-14,Paid Search,108
+2026-05-14,Organic Search,91
+2026-05-14,Affiliates,30
+2026-05-14,Email,37
+2026-05-14,Paid Social,21
+2026-05-15,Direct,78
+2026-05-15,Paid Search,69
+2026-05-15,Organic Search,83
+2026-05-15,Affiliates,32
+2026-05-15,Email,28
+2026-05-15,Paid Social,14
+2026-05-16,Direct,72
+2026-05-16,Paid Search,52
+2026-05-16,Organic Search,78
+2026-05-16,Affiliates,19
+2026-05-16,Email,25
+2026-05-16,Paid Social,21
+2026-05-17,Direct,73
+2026-05-17,Paid Search,77
+2026-05-17,Organic Search,82
+2026-05-17,Affiliates,30
+2026-05-17,Email,17
+2026-05-17,Paid Social,13
+2026-05-18,Direct,84
+2026-05-18,Paid Search,105
+2026-05-18,Organic Search,78
+2026-05-18,Affiliates,29
+2026-05-18,Email,34
+2026-05-18,Paid Social,15
+2026-05-19,Direct,75
+2026-05-19,Paid Search,99
+2026-05-19,Organic Search,113
+2026-05-19,Affiliates,26
+2026-05-19,Email,30
+2026-05-19,Paid Social,17
+2026-05-20,Direct,79
+2026-05-20,Paid Search,101
+2026-05-20,Organic Search,84
+2026-05-20,Affiliates,27
+2026-05-20,Email,19
+2026-05-20,Paid Social,16
+2026-05-21,Direct,90
+2026-05-21,Paid Search,83
+2026-05-21,Organic Search,100
+2026-05-21,Affiliates,22
+2026-05-21,Email,32
+2026-05-21,Paid Social,14
+2026-05-22,Direct,68
+2026-05-22,Paid Search,75
+2026-05-22,Organic Search,77
+2026-05-22,Affiliates,20
+2026-05-22,Email,21
+2026-05-22,Paid Social,16
+2026-05-23,Direct,61
+2026-05-23,Paid Search,68
+2026-05-23,Organic Search,61
+2026-05-23,Affiliates,31
+2026-05-23,Email,26
+2026-05-23,Paid Social,26
+2026-05-24,Direct,72
+2026-05-24,Paid Search,68
+2026-05-24,Organic Search,69
+2026-05-24,Affiliates,21
+2026-05-24,Email,20
+2026-05-24,Paid Social,19
+2026-05-25,Direct,70
+2026-05-25,Paid Search,80
+2026-05-25,Organic Search,89
+2026-05-25,Affiliates,25
+2026-05-25,Email,28
+2026-05-25,Paid Social,12
+2026-05-26,Direct,88
+2026-05-26,Paid Search,82
+2026-05-26,Organic Search,100
+2026-05-26,Affiliates,22
+2026-05-26,Email,27
+2026-05-26,Paid Social,12
+2026-05-27,Direct,53
+2026-05-27,Paid Search,78
+2026-05-27,Organic Search,112
+2026-05-27,Affiliates,14
+2026-05-27,Email,18
+2026-05-27,Paid Social,14
+2026-05-28,Direct,79
+2026-05-28,Paid Search,74
+2026-05-28,Organic Search,89
+2026-05-28,Affiliates,32
+2026-05-28,Email,22
+2026-05-28,Paid Social,19
+2026-05-29,Direct,89
+2026-05-29,Paid Search,68
+2026-05-29,Organic Search,81
+2026-05-29,Affiliates,29
+2026-05-29,Email,26
+2026-05-29,Paid Social,25
+2026-05-30,Direct,68
+2026-05-30,Paid Search,62
+2026-05-30,Organic Search,60
+2026-05-30,Affiliates,19
+2026-05-30,Email,13
+2026-05-30,Paid Social,21
+2026-05-31,Direct,69
+2026-05-31,Paid Search,77
+2026-05-31,Organic Search,66
+2026-05-31,Affiliates,20
+2026-05-31,Email,24
+2026-05-31,Paid Social,11
+2026-06-01,Direct,84
+2026-06-01,Paid Search,89
+2026-06-01,Organic Search,100
+2026-06-01,Affiliates,34
+2026-06-01,Email,21
+2026-06-01,Paid Social,16
+2026-06-02,Direct,72
+2026-06-02,Paid Search,89
+2026-06-02,Organic Search,92
+2026-06-02,Affiliates,26
+2026-06-02,Email,24
+2026-06-02,Paid Social,16
+2026-06-03,Direct,81
+2026-06-03,Paid Search,97
+2026-06-03,Organic Search,113
+2026-06-03,Affiliates,27
+2026-06-03,Email,24
+2026-06-03,Paid Social,13
+2026-06-04,Direct,78
+2026-06-04,Paid Search,101
+2026-06-04,Organic Search,89
+2026-06-04,Affiliates,27
+2026-06-04,Email,33
+2026-06-04,Paid Social,23
+2026-06-05,Direct,77
+2026-06-05,Paid Search,70
+2026-06-05,Organic Search,88
+2026-06-05,Affiliates,39
+2026-06-05,Email,24
+2026-06-05,Paid Social,13
+2026-06-06,Direct,73
+2026-06-06,Paid Search,76
+2026-06-06,Organic Search,69
+2026-06-06,Affiliates,32
+2026-06-06,Email,29
+2026-06-06,Paid Social,18
+2026-06-07,Direct,87
+2026-06-07,Paid Search,70
+2026-06-07,Organic Search,71
+2026-06-07,Affiliates,26
+2026-06-07,Email,23
+2026-06-07,Paid Social,19
+2026-06-08,Direct,70
+2026-06-08,Paid Search,87
+2026-06-08,Organic Search,101
+2026-06-08,Affiliates,28
+2026-06-08,Email,17
+2026-06-08,Paid Social,16
+2026-06-09,Direct,94
+2026-06-09,Paid Search,82
+2026-06-09,Organic Search,98
+2026-06-09,Affiliates,19
+2026-06-09,Email,32
+2026-06-09,Paid Social,21
+2026-06-10,Direct,83
+2026-06-10,Paid Search,85
+2026-06-10,Organic Search,85
+2026-06-10,Affiliates,21
+2026-06-10,Email,15
+2026-06-10,Paid Social,20
+2026-06-11,Direct,76
+2026-06-11,Paid Search,75
+2026-06-11,Organic Search,96
+2026-06-11,Affiliates,26
+2026-06-11,Email,44
+2026-06-11,Paid Social,17
+2026-06-12,Direct,73
+2026-06-12,Paid Search,75
+2026-06-12,Organic Search,83
+2026-06-12,Affiliates,24
+2026-06-12,Email,25
+2026-06-12,Paid Social,17
+2026-06-13,Direct,55
+2026-06-13,Paid Search,59
+2026-06-13,Organic Search,62
+2026-06-13,Affiliates,27
+2026-06-13,Email,24
+2026-06-13,Paid Social,15
+2026-06-14,Direct,70
+2026-06-14,Paid Search,70
+2026-06-14,Organic Search,83
+2026-06-14,Affiliates,19
+2026-06-14,Email,22
+2026-06-14,Paid Social,20
+2026-06-15,Direct,86
+2026-06-15,Paid Search,79
+2026-06-15,Organic Search,83
+2026-06-15,Affiliates,23
+2026-06-15,Email,21
+2026-06-15,Paid Social,15
+2026-06-16,Direct,78
+2026-06-16,Paid Search,77
+2026-06-16,Organic Search,97
+2026-06-16,Affiliates,23
+2026-06-16,Email,19
+2026-06-16,Paid Social,17
+2026-06-17,Direct,73
+2026-06-17,Paid Search,93
+2026-06-17,Organic Search,92
+2026-06-17,Affiliates,26
+2026-06-17,Email,22
+2026-06-17,Paid Social,16
+2026-06-18,Direct,60
+2026-06-18,Paid Search,75
+2026-06-18,Organic Search,86
+2026-06-18,Affiliates,32
+2026-06-18,Email,27
+2026-06-18,Paid Social,9
+2026-06-19,Direct,82
+2026-06-19,Paid Search,70
+2026-06-19,Organic Search,83
+2026-06-19,Affiliates,25
+2026-06-19,Email,30
+2026-06-19,Paid Social,14
+2026-06-20,Direct,73
+2026-06-20,Paid Search,65
+2026-06-20,Organic Search,71
+2026-06-20,Affiliates,20
+2026-06-20,Email,17
+2026-06-20,Paid Social,17
+2026-06-21,Direct,64
+2026-06-21,Paid Search,83
+2026-06-21,Organic Search,85
+2026-06-21,Affiliates,34
+2026-06-21,Email,24
+2026-06-21,Paid Social,14
+2026-06-22,Direct,79
+2026-06-22,Paid Search,92
+2026-06-22,Organic Search,84
+2026-06-22,Affiliates,25
+2026-06-22,Email,27
+2026-06-22,Paid Social,15
+2026-06-23,Direct,75
+2026-06-23,Paid Search,99
+2026-06-23,Organic Search,100
+2026-06-23,Affiliates,21
+2026-06-23,Email,32
+2026-06-23,Paid Social,13
+2026-06-24,Direct,73
+2026-06-24,Paid Search,102
+2026-06-24,Organic Search,81
+2026-06-24,Affiliates,32
+2026-06-24,Email,23
+2026-06-24,Paid Social,17
+2026-06-25,Direct,90
+2026-06-25,Paid Search,96
+2026-06-25,Organic Search,90
+2026-06-25,Affiliates,35
+2026-06-25,Email,30
+2026-06-25,Paid Social,23
+2026-06-26,Direct,69
+2026-06-26,Paid Search,76
+2026-06-26,Organic Search,87
+2026-06-26,Affiliates,39
+2026-06-26,Email,23
+2026-06-26,Paid Social,12
+2026-06-27,Direct,85
+2026-06-27,Paid Search,54
+2026-06-27,Organic Search,92
+2026-06-27,Affiliates,27
+2026-06-27,Email,30
+2026-06-27,Paid Social,18
+2026-06-28,Direct,83
+2026-06-28,Paid Search,74
+2026-06-28,Organic Search,91
+2026-06-28,Affiliates,24
+2026-06-28,Email,23
+2026-06-28,Paid Social,22
+2026-06-29,Direct,86
+2026-06-29,Paid Search,109
+2026-06-29,Organic Search,98
+2026-06-29,Affiliates,21
+2026-06-29,Email,25
+2026-06-29,Paid Social,10
