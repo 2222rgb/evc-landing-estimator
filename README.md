@@ -1,94 +1,90 @@
-# EVC & Ghost Traffic Attribution Analyzer
+# evc-landing-estimator
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Benfinkels/Cross-Channel-Attribution-Analyzer-EVC-Impact-Model/blob/main/EVC_Session_Attribution.ipynb)
+[![CI](https://github.com/Benfinkels/evc-landing-estimator/actions/workflows/ci.yml/badge.svg)](https://github.com/Benfinkels/evc-landing-estimator/actions/workflows/ci.yml)
+[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Benfinkels/evc-landing-estimator/blob/main/notebooks/evc_landing_estimator.ipynb)
 
-A statistical modeling suite that quantifies the incremental cross-channel impact of YouTube **Engaged-View Conversions (EVCs)** on high-intent channels (Direct, Organic Search, Paid Search) using **Time-Lagged Non-Negative Least Squares (NNLS)** and **Ridge Regression**.
+Estimate which last-click channels (Direct, Brand Search, Affiliate, etc.) are absorbing your Google Ads YouTube **Engaged-View Conversions (EVCs)**, from any CRM, UTM, or GA4 export.
 
----
+## Why
 
-## 1. The Attribution Problem
+When a user watches a YouTube ad (≥10s) without clicking and converts within 3 days, Google Ads counts an EVC. Your own analytics or CRM records that same conversion under last-click credit (often Direct, Brand Search, or Affiliate). No standard report shows how EVCs split across those channels. This tool estimates the split from daily totals alone.
 
-Video advertising (YouTube) creates top-of-funnel demand that rarely manifests as an immediate click. Users watch a video ad, consider the brand, and later visit the site via high-intent channels such as:
-- **Direct navigation**
-- **Organic Search (Brand)**
-- **Paid Search (CPC)**
+## Quickstart
 
-Standard analytics platforms (like Google Analytics 4) credit the *last non-direct click*, leaving Video campaigns appearing inefficient while "free" or bottom-funnel channels appear artificially inflated.
+```bash
+pip install -e .
+evc-landing-estimator demo --scenario known_split --out-dir out/
+evc-landing-estimator run --conversions crm_leads.csv --evc google_ads_evc.csv --ads-tz America/New_York --brand-terms "acme" --out-dir out/
+```
 
-**The Solution:** This tool mathematically "unmixes" site traffic across channels. It scans time lags between 0 and 14 days and detects which channels statistically rise and fall in correlation with video view spikes, effectively tracing "Ghost Traffic" back to its true acquisition origin.
+Preview channel mapping and unmapped raw values before modeling:
 
----
+```bash
+evc-landing-estimator map --conversions crm_leads.csv --brand-terms "acme"
+```
 
-## 2. Methodology: Dual-Model Approach
+## Inputs
 
-| Model | Nickname | Statistical Method | Best For | Interpretation |
-|---|---|---|---|---|
-| **Model A** | *The Judge* | **Non-Negative Least Squares (NNLS)** | Identifying the **Primary Driver** | Conservative & strict. Forces channels to compete for credit ($w_i \ge 0$). |
-| **Model B** | *The Diplomat* | **Ridge Regression (L2 penalty)** | Measuring the **Halo Effect** | Captures multi-channel lift and collinearity across channels. |
+| Input | Supported Formats | What's needed |
+| :--- | :--- | :--- |
+| **Conversions** | CSV or XLSX (row-level CRM/UTM log, GA4 daily export, wide table, or date-header pivot) | Timestamp/date + at least one of `source`, `medium`, or `channel`. Optional `id` (deduplicated), `campaign`/`term` (brand split), `conversions` weight. |
+| **Google Ads EVC** | CSV or XLSX (handles title rows, `Total` footer, `"1,234"`, and `"--"`) | `Day` + `Engaged-view conversions` exported for the **same conversion action** as your conversions file. |
+| **Controls *(optional)*** | CSV or XLSX (`--controls`) | `date` + numeric flags for promos, holidays, or price changes. |
 
-### Auto-Lag Detection
-Rather than assuming an arbitrary lookback window, the tool automatically tests lags from $t=0$ to $t=14$ days and locks onto the delay that optimizes predictive fit ($R^2$).
+Channel mapping is driven by an editable, deterministic regex table ([`channel_rules.csv`](src/evc_landing_estimator/channel_rules.csv)) with zero LLM calls.
 
----
+## How It Works
 
-## 3. Quickstart
+For each modeled channel $c$ on day $t$:
 
-### Option A: Run in Google Colab (One-Click)
-Click the badge above or open [`EVC_Session_Attribution.ipynb`](EVC_Session_Attribution.ipynb) directly in Google Colab.
+$$Y_c(t) = D(t)^\top \beta_c + w_c \sum_{L=0}^{L_{\max}} k_L \, E(t - L) + \varepsilon_c(t), \qquad w_c \ge 0,\ \ \sum_c w_c \le 1$$
 
-### Option B: Run Locally
+- **Forward time direction:** `E(t - L)` lags EVCs forward (`impression_time`, default `L = 0..3`); switch `--date-basis conversion_time` to anchor on `L = 0`.
+- **Shared delay curve (`k`):** One 0–3 day view-to-conversion curve shared across all channels, keeping estimation stable on short daily series.
+- **Adding-up constraint:** Channel shares are projected onto `{w >= 0, sum(w) <= 1}`. The remainder `1 - sum(w)` is reported as **Not visible** (consent loss, cross-device, app, or excluded channels).
+- **Uncertainty:** 7-day moving-block bootstrap (default 500 draws) produces 90% confidence intervals and `P(#1)` (probability a channel is the top landing spot).
+- **Guardrails:** A **future-EVC lead check** (`E(t+1..t+2)`) flags shared demand shocks as `Confounded`, and a **planted-signal power test** injects a known +25% share into your actual noise to verify recoverability before trusting a channel.
 
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/Benfinkels/Cross-Channel-Attribution-Analyzer-EVC-Impact-Model.git
-   cd Cross-Channel-Attribution-Analyzer-EVC-Impact-Model
-   ```
+## Reading the Results
 
-2. **Set up a Python environment (Python 3.10+):**
-   ```bash
-   python -m venv .venv
-   # Windows:
-   .venv\Scripts\activate
-   # macOS/Linux:
-   source .venv/bin/activate
+- **Strong:** 90% CI lower bound ≥ 10%, passes power test, not confounded.
+- **Directional:** 90% CI lower bound between 1% and 10%, passes power test, not confounded.
+- **Inconclusive:** 90% CI lower bound ≤ 1%, or channel failed the planted-signal power test.
+- **Confounded:** Future EVCs predict current conversions (`lead_flag = True`) on a positive-share channel.
+- **`P(#1)`:** Share of bootstrap draws where the channel ranks #1.
 
-   pip install -r requirements.txt
-   ```
+Outputs written to `--out-dir`: `results.json`, `results.xlsx` (8 sheets), self-contained `report.html`, and 4 PNG charts.
 
-3. **Launch Jupyter Lab or Notebook:**
-   ```bash
-   jupyter lab
-   ```
-   Open `EVC_Session_Attribution.ipynb` and run the cells. Ready-to-use sample datasets (`sample_ga4_sessions.csv` and `sample_google_ads_evc.csv`) are bundled in the repository so the entire analysis runs immediately out of the box.
+## Validation (Synthetic Ground Truth)
 
----
+On the bundled 180-day synthetic CRM dataset (planted truth: **Direct 40%**, **Paid Brand Search 20%**, **Affiliate 15%**, **Organic Brand Search 10%**, **Not visible 15%**, four null channels at **0%**), the model recovers every channel within ±2 percentage points and labels all null channels `Inconclusive`:
 
-## 4. Using Your Own Data
+![Synthetic Known-Split Recovery](docs/charts/known_split_shares.png)
 
-The notebook includes a smart auto-parser that accepts GA4 and Google Ads exports in **Long**, **Wide**, or **Pivot** formats:
+On the pure-confounder scenario (**0% true EVC overlap**, six simultaneous promo waves lifting EVCs and Direct/Paid Brand together), the future-EVC lead check catches the shared demand shock and flags `CONFOUNDED`:
 
-1. **Session Data (Effect):** Export from GA4 with:
-   - `Date` (e.g. `2024-01-15`)
-   - `Session source / medium` or `Channel`
-   - `Sessions`
-2. **Ad Data (Cause):** Export from Google Ads with:
-   - `Date`
-   - `Engaged-view conversions` or `Conversions`
+![Confounder Falsification Check](docs/charts/confounder_shares.png)
 
-Upload your CSVs using the interactive loader or drop them into the repository folder.
+## Limitations
 
----
+- **Not incrementality or ROI:** EVCs are double-counted conversions. This tool estimates where conversions get last-click credit, not whether YouTube caused them. It intentionally does not output revenue or ROAS.
+- **Not user-level matching:** All estimates come from daily aggregate totals.
+- **Not proof:** Unlogged promos lifting EVCs and a channel simultaneously can mimic overlap. Pass `--controls` when you have them; only a holdout or geo test rules confounding out completely.
+- **Low EVC volume:** When daily EVCs are tiny relative to channel noise, the power test flags channels as `Inconclusive` rather than fabricating shares.
 
-## 5. Outputs & Deliverables
+## v1 → v2: What Was Wrong
 
-- **`EVC_Competitive_Model.csv`**: Coefficients and attributed conversion counts per channel from NNLS.
-- **`EVC_Competitive_Model_Ridge.csv`**: Coefficients and attributed conversions from Ridge Regression.
-- **Interactive Dual Stack Plots**: Stacked time series showing predicted channel volume aligned against actual reported EVCs.
-- **Ghost ROI Analysis**: Translates attributed conversions into monetary value using Average Order Value (AOV) and Target CPA.
-- **`Attribution_Master_Report.html`**: A standalone, self-contained executive dashboard report ready to share with stakeholders.
+The original prototype is preserved at git tag [`v1-legacy`](../../tree/v1-legacy). Six defects motivated this rewrite:
 
----
+1. **Backward lag shift:** v1 used `df_X.shift(+lag)` with `y = EVC`, testing whether *past* site visits caused *today's* ad views.
+2. **Sessions instead of conversions:** Modeling sessions answers a traffic-halo question, not where EVC conversions receive last-click credit.
+3. **Zero-intercept NNLS on raw totals:** Forcing baseline organic traffic through `(0, 0)` credited baseline volume to YouTube (>100% attribution).
+4. **Broken pipeline state:** Cell 2 never saved `EVC_Competitive_Model.csv` outside Colab download, causing the ROI cell to fail.
+5. **Fragile column matching:** Exact `'EVC'` matching missed `'Engaged-View Conversions'` and defaulted to `'Date'`.
+6. **Hardcoded `lag = 1`:** The visualizer and HTML report ignored the selected lag.
 
 ## License
 
-MIT License.
+MIT — see [`LICENSE`](LICENSE).
