@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "evc-landing-estimator"
+version = "2.0.0"
+description = "Estimate which last-click channels absorb Google Ads YouTube Engaged-View Conversions from daily CRM, UTM, or GA4 exports."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+dependencies = [
+    "numpy>=1.24",
+    "pandas>=2.0",
+    "scipy>=1.11",
+    "matplotlib>=3.7",
+    "openpyxl>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4",
+]
+
+[project.scripts]
+evc-landing-estimator = "evc_landing_estimator.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+evc_landing_estimator = ["channel_rules.csv"]
+
+[tool.pytest.ini_options]
+markers = [
+    "slow: end-to-end runtime and full-bootstrap tests",
+]
