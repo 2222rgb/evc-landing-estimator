@@ -1,0 +1,27 @@
+priority,bucket,field,pattern
+10,Paid Video,channel,^paid\s*video$
+15,Paid Video,source_medium,youtube.*\/.*(cpc|cpv|cpm|paid|video|display)
+20,Paid Video,medium,^(cpv|paid_video|paidvideo|video_paid)$
+30,Affiliate,channel,^affiliates?$
+35,Affiliate,medium,\b(affiliate|affiliates|partner|cj|impact|rakuten|awin|shareasale)\b
+40,Affiliate,source,(coupon|cashback|rebate|honey|retailmenot|ebates|rakuten|skimlinks|slickdeals)
+50,Email/SMS,channel,^(email|sms|email/sms)$
+55,Email/SMS,medium,(email|e-mail|newsletter|klaviyo|mailchimp|sfmc|braze|sms|text)
+60,Email/SMS,source,\b(klaviyo|mailchimp|sendgrid|hubspot_email|braze|attentive|postscript)\b
+70,Paid Social,channel,^paid\s*social$
+75,Paid Social,medium,(paid_social|paidsocial|social_paid)
+80,Paid Social,source_medium,(facebook|fb|instagram|ig|meta|tiktok|linkedin|pinterest|snap|reddit|twitter|x\.com).*\/.*(cpc|ppc|cpm|paid|ads)
+90,Paid Search,channel,^paid\s*search$
+95,Paid Search,medium,^(paidsearch|paid_search|sem)$
+100,Paid Search,source_medium,(google|bing|microsoft|yahoo|duckduckgo|baidu).*\/.*(cpc|ppc|paid)
+110,Organic Search,channel,^organic\s*search$
+115,Organic Search,medium,^organic$
+120,Display,channel,^display$
+125,Display,medium,(display|banner|programmatic|cpm)
+130,Organic Social,channel,^organic\s*social$
+135,Organic Social,source,(facebook|fb|instagram|ig|meta|tiktok|linkedin|pinterest|snap|reddit|twitter|x\.com)
+136,Referral,channel,^referral$
+137,Referral,medium,^referral$
+140,Direct,channel,^(direct|typed)$
+145,Direct,source,^(\(direct\)|direct|typed)$
+150,Direct,any,^\s*(\(direct\)|direct|\(none\)|\(not set\)|none|\||\s)*\s*$
