@@ -125,6 +125,20 @@ def build_design(
     )
 
 
+def _project_simplex_eq(v: np.ndarray) -> np.ndarray:
+    """Exact Euclidean projection onto the probability simplex {k >= 0, sum(k) = 1}."""
+    u = np.asarray(v, dtype=float)
+    s = np.sort(u)[::-1]
+    cssv = np.cumsum(s) - 1.0
+    ind = np.arange(1, len(u) + 1, dtype=float)
+    cond = s - cssv / ind > 0
+    if not np.any(cond):
+        return np.full_like(u, 1.0 / len(u))
+    rho = int(np.nonzero(cond)[0][-1])
+    theta = cssv[rho] / (rho + 1.0)
+    return np.maximum(u - theta, 0.0)
+
+
 def _solve_k_simplex(E_tilde: np.ndarray, Y_tilde: np.ndarray, w: np.ndarray, k_init: np.ndarray) -> np.ndarray:
     """Minimize sum_c ||y_tilde_c - w_c * (E_tilde @ k)||^2 over simplex {k >= 0, sum(k) = 1}."""
     sw = float(w @ w)
@@ -133,13 +147,18 @@ def _solve_k_simplex(E_tilde: np.ndarray, Y_tilde: np.ndarray, w: np.ndarray, k_
     y_bar = (Y_tilde @ w) / sw
     G = E_tilde.T @ E_tilde
     g = E_tilde.T @ y_bar
+    scale = float(np.max(np.abs(G)))
+    if scale <= 1e-12:
+        return k_init
+    Gn = G / scale
+    gn = g / scale
     L_len = len(k_init)
 
     def obj(kk: np.ndarray) -> float:
-        return float(0.5 * kk @ G @ kk - g @ kk)
+        return float(0.5 * kk @ Gn @ kk - gn @ kk)
 
     def jac(kk: np.ndarray) -> np.ndarray:
-        return G @ kk - g
+        return Gn @ kk - gn
 
     res = minimize(
         obj,
@@ -150,9 +169,24 @@ def _solve_k_simplex(E_tilde: np.ndarray, Y_tilde: np.ndarray, w: np.ndarray, k_
         constraints=[{"type": "eq", "fun": lambda kk: float(np.sum(kk) - 1.0), "jac": lambda kk: np.ones(L_len)}],
         options={"ftol": 1e-10, "maxiter": 60, "disp": False},
     )
-    k_new = np.clip(res.x if res.success else k_init, 0.0, 1.0)
-    s = float(k_new.sum())
-    return k_new / s if s > 0 else np.full(L_len, 1.0 / L_len)
+    if res.success and np.all(np.isfinite(res.x)):
+        k_new = np.clip(res.x, 0.0, 1.0)
+        s = float(k_new.sum())
+        return k_new / s if s > 0 else np.full(L_len, 1.0 / L_len)
+
+    # Fallback: projected gradient on the normalized simplex QP if SLSQP line-search stalls
+    L_lip = max(float(np.linalg.norm(Gn, 2)), 1e-12)
+    step = 1.0 / L_lip
+    kk = _project_simplex_eq(res.x if np.all(np.isfinite(res.x)) else k_init)
+    if obj(k_init) < obj(kk):
+        kk = k_init.copy()
+    for _ in range(200):
+        k_next = _project_simplex_eq(kk - step * jac(kk))
+        if float(np.max(np.abs(k_next - kk))) < 1e-10:
+            kk = k_next
+            break
+        kk = k_next
+    return kk
 
 
 def _fit_core(
