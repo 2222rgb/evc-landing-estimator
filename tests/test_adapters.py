@@ -1,4 +1,4 @@
-"""Tests for CRM, UTM, GA4, wide/pivot, XLSX, and Google Ads EVC adapters."""
+﻿"""Tests for CRM, UTM, GA4, wide/pivot, XLSX, and Google Ads EVC adapters."""
 
 from pathlib import Path
 
@@ -116,3 +116,147 @@ def test_column_overrides_win(tmp_path):
     assert res.df.loc[0, "date"] == pd.Timestamp("2026-01-01")
     assert res.df.loc[0, "source"] == "rakuten"
     assert res.df.loc[0, "conversions"] == 9.0
+
+
+# --- European decimal commas & localized dates (issue #1) -------------------
+from evc_landing_estimator.adapters import (  # noqa: E402
+    _clean_numeric_series,
+    _parse_localized_dates,
+)
+
+
+def test_clean_numeric_us_thousands_not_misread():
+    # US exports: comma is a thousands group, never a decimal point.
+    s = _clean_numeric_series(pd.Series(["1,025", "1,067", "12,500", "42"]))
+    assert s.tolist() == [1025.0, 1067.0, 12500.0, 42.0]
+
+
+def test_clean_numeric_eu_decimal_comma():
+    # EU exports: comma is the decimal separator.
+    s = _clean_numeric_series(pd.Series(["12,5", "0,25", "1,2345", "3,0"]))
+    assert s.tolist() == [12.5, 0.25, 1.2345, 3.0]
+
+
+def test_clean_numeric_eu_dot_grouping_and_mixed():
+    # 1.234 -> one thousand two hundred thirty-four (dot = thousands group)
+    # 1.234,56 -> 1234.56 (dot groups, comma decimals)
+    s = _clean_numeric_series(pd.Series(["1.234", "1.234,56", "12.345.678"]))
+    assert s.tolist() == [1234.0, 1234.56, 12345678.0]
+
+
+def test_clean_numeric_unparseable_stays_nan():
+    # Unparseable values must NOT be silently coerced to 0.
+    s = _clean_numeric_series(pd.Series(["n/a", "abc", "42"]))
+    assert pd.isna(s.iloc[0])
+    assert pd.isna(s.iloc[1])
+    assert s.iloc[2] == 42.0
+
+
+def test_localized_dates_day_first_and_unambiguous_month_first():
+    parsed = _parse_localized_dates(
+        pd.Series(["03/04/2026", "13/04/2026", "04/13/2026", "2026-04-03"])
+    )
+    # 03/04 -> 3 April (day-first European default)
+    assert parsed.iloc[0] == pd.Timestamp("2026-04-03")
+    # 13/04 -> day 13 forces day-first
+    assert parsed.iloc[1] == pd.Timestamp("2026-04-13")
+    # 04/13 -> month 13 impossible, so it is month-first (US)
+    assert parsed.iloc[2] == pd.Timestamp("2026-04-13")
+    # ISO passes through
+    assert parsed.iloc[3] == pd.Timestamp("2026-04-03")
+
+
+def test_eu_google_ads_csv_end_to_end(tmp_path):
+    # A Google Ads export with EU number formatting and DD/MM/YYYY dates.
+    p = tmp_path / "ads_eu.csv"
+    p.write_text(
+        "Day,Engaged-view conversions\n"
+        "03/04/2026,\"1.234,5\"\n"
+        "04/04/2026,\"12,5\"\n"
+        "05/04/2026,42\n",
+        encoding="utf-8",
+    )
+    evc = load_evc(p)
+    assert len(evc) == 3
+    assert evc.loc[pd.Timestamp("2026-04-03")] == 1234.5
+    assert evc.loc[pd.Timestamp("2026-04-04")] == 12.5
+    assert evc.loc[pd.Timestamp("2026-04-05")] == 42.0
+
+
+
+# --- Expanded column synonyms (issue #2) -----------------------------------
+# Regression fixtures for Shopify / HubSpot / Salesforce style exports whose
+# headers use spaced or vendor-specific names instead of the classic utm_* set.
+
+
+def test_hubspot_spaced_headers(tmp_path):
+    # HubSpot exports use "Original Source", "Lead ID", "Campaign Name".
+    p = tmp_path / "hubspot.csv"
+    p.write_text(
+        "Record ID,Create Date,Original Source,Source Drill-Down 2,Campaign Name\n"
+        "R1,2026-01-01,google,cpc,spring_sale\n"
+        "R2,2026-01-01,facebook,paid_social,spring_sale\n",
+        encoding="utf-8",
+    )
+    res = load_conversions(p)
+    assert res.shape == "row_level"
+    assert set(res.df["source"]) == {"google", "facebook"}
+    assert set(res.df["medium"]) == {"cpc", "paid_social"}
+    assert set(res.df["campaign"]) == {"spring_sale"}
+
+
+def test_salesforce_opportunity_headers(tmp_path):
+    # Salesforce uses "Opportunity ID", "Lead Source", "Created".
+    p = tmp_path / "salesforce.csv"
+    p.write_text(
+        "Opportunity ID,Created,Lead Source,Marketing Source\n"
+        "OPP-1,2026-02-03T10:00:00Z,Webinar,newsletter\n",
+        encoding="utf-8",
+    )
+    res = load_conversions(p)
+    assert len(res.df) == 1
+    assert res.df.loc[0, "source"] == "Webinar"
+
+
+def test_shopify_order_headers(tmp_path):
+    # Shopify uses "Order ID", "Created at", "Referrer Source".
+    p = tmp_path / "shopify.csv"
+    p.write_text(
+        "Order ID,Created at,Referrer Source,utm medium\n"
+        "S-100,2026-03-04T08:00:00Z,google,email\n",
+        encoding="utf-8",
+    )
+    res = load_conversions(p)
+    assert len(res.df) == 1
+    assert res.df.loc[0, "source"] == "google"
+    assert res.df.loc[0, "medium"] == "email"
+
+
+def test_channel_grouping_header(tmp_path):
+    # GA4-ish wide export using "Channel Grouping" as the channel column.
+    p = tmp_path / "ga4_wide.csv"
+    p.write_text(
+        "Channel Grouping,2026-01-01,2026-01-02\n"
+        "Direct,10,12\n"
+        "Organic Search,5,7\n",
+        encoding="utf-8",
+    )
+    res = load_conversions(p)
+    assert res.shape in ("aggregated_wide", "aggregated_pivot")
+    assert res.df["conversions"].sum() == 34.0
+
+
+def test_transaction_id_synonym_is_id(tmp_path):
+    # "Transaction ID" must be recognised as the row id (dedup key).
+    p = tmp_path / "txn.csv"
+    p.write_text(
+        "Transaction ID,Timestamp,Source,Medium\n"
+        "T1,2026-01-05T01:00:00Z,google,cpc\n"
+        "T1,2026-01-05T01:00:00Z,google,cpc\n"
+        "T2,2026-01-05T02:00:00Z,google,cpc\n",
+        encoding="utf-8",
+    )
+    res = load_conversions(p)
+    assert res.shape == "row_level"
+    assert res.duplicates_removed == 1
+    assert len(res.df) == 2
