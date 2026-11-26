@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -12,14 +13,57 @@ import pandas as pd
 from evc_landing_estimator.config import ColumnOverrides, Config
 
 # Ordered synonym tables (case-insensitive substring match; exact match preferred first)
-TIMESTAMP_SYNONYMS = ("converted_at", "timestamp", "created_at", "created", "submitted", "date", "day", "time")
-ID_SYNONYMS = ("lead_id", "order_id", "transaction_id", "conversion_id", "id")
-SOURCE_SYNONYMS = ("utm_source", "session source", "lead source", "lead_source", "source")
-MEDIUM_SYNONYMS = ("utm_medium", "session medium", "medium")
-CAMPAIGN_SYNONYMS = ("utm_campaign", "campaign")
-TERM_SYNONYMS = ("utm_term", "keyword", "query", "term")
-CHANNEL_SYNONYMS = ("default channel group", "channel grouping", "channel_group", "channel")
-CONVERSIONS_SYNONYMS = ("key events", "conversions", "conversion_count", "count")
+# --- expanded synonym tables (issue #2) ---
+# Ordered synonym tables (case-insensitive; exact match preferred, then longest
+# word-boundary match).  Ordering matters: more specific entries come first.
+#
+# Coverage targets real-world export headers:
+#   Shopify     "Day", "Order ID", "Landing page", "UTM Source", "Total Sales"
+#   HubSpot     "Created", "Conversion ID", "Original Source", "Latest Source",
+#               "Source Drill-Down 1", "Count of Sessions"
+#   Salesforce  "Close Date", "Opportunity ID", "Lead Source", "Campaign Name",
+#               "Number of Conversions"
+TIMESTAMP_SYNONYMS = (
+    "converted_at", "conversion date", "conversion_date", "converted date",
+    "timestamp", "event time", "event_time", "created_at", "created at",
+    "close date", "closedate", "closed_date", "order date", "order_date",
+    "session start", "session_start", "session date", "reporting date",
+    "created", "submitted", "date", "day", "time",
+)
+ID_SYNONYMS = (
+    "lead_id", "lead id", "order_id", "order id", "transaction_id",
+    "transaction id", "conversion_id", "conversion id", "opportunity id",
+    "opportunity_id", "session id", "session_id", "event id", "event_id",
+    "record id", "record_id", "id",
+)
+SOURCE_SYNONYMS = (
+    "utm_source", "utm source", "session source", "original source",
+    "latest source", "lead source", "lead_source", "source drill-down 1",
+    "source drill-down", "source drilldown", "marketing source",
+    "traffic source", "referrer source", "source",
+)
+MEDIUM_SYNONYMS = (
+    "utm_medium", "utm medium", "session medium", "source drill-down 2",
+    "latest medium", "medium",
+)
+CAMPAIGN_SYNONYMS = (
+    "utm_campaign", "utm campaign", "campaign name", "campaign_name",
+    "campaign id", "campaign",
+)
+TERM_SYNONYMS = (
+    "utm_term", "utm term", "utm_content", "utm content", "search keyword",
+    "keyword", "query", "term",
+)
+CHANNEL_SYNONYMS = (
+    "default channel group", "channel grouping", "channel_group",
+    "primary channel", "channel", "landing page",
+)
+CONVERSIONS_SYNONYMS = (
+    "engaged-view conv", "engaged view conv", "key events",
+    "number of conversions", "conversion count", "conversion_count",
+    "count of conversions", "conversions", "total conversions",
+    "total sales", "orders", "count of sessions", "count",
+)
 EVC_SYNONYMS = ("engaged-view conv", "engaged view conv", "evc")
 
 
@@ -31,16 +75,91 @@ class LoadedConversions:
     detected_columns: dict[str, str | None] = field(default_factory=dict)
 
 
+# Tokens that represent an explicit "no data" cell and are legitimately 0.
+_NULL_TOKENS = frozenset({"--", "-", "", "nan", "none", "null", "n/a", "na"})
+
+
+def _looks_european(raw: list[str]) -> bool:
+    """True if a handful of numeric-looking strings follow EU conventions.
+
+    The decision is deliberately conservative so that plain US exports
+    (``1,025`` meaning one thousand and twenty-five) are never misread as
+    European decimals.  A comma is only taken as the decimal separator when
+    it is *unambiguously* a decimal point -- i.e. it is not followed by
+    exactly three digits (which would be a thousands group), and it is not
+    preceded by a dot (which would make the dot the decimal point).  A dot is
+    only taken as a thousands separator when it groups in threes *and* there
+    is no comma at all.
+    """
+    for token in raw:
+        s = token.strip()
+        if not s or s.lower() in _NULL_TOKENS:
+            continue
+        # comma decimal separator, unambiguously EU:
+        #   - decimal part is not exactly 3 digits (1,5 / 1,25 / 1,2345)
+        #   - or a dot grouping precedes it (1.234,5)
+        if re.fullmatch(r"[+-]?\d{1,3}(\.\d{3})*,\d+", s):
+            frac = s.rsplit(",", 1)[1]
+            if len(frac) != 3 or "." in s:
+                return True
+            # ambiguous: 1,234 could be US thousands or EU decimal -> skip
+            continue
+        # dot thousands separator without any comma: 1.234 / 12.345.678
+        if re.fullmatch(r"[+-]?\d{1,3}(\.\d{3})+", s):
+            return True
+    return False
+
+
+def _parse_numeric_token(token: str, european: bool) -> float:
+    """Parse a single numeric cell into a float, honouring the locale."""
+    if token is None:
+        return np.nan
+    s = str(token).strip()
+    if s.lower() in _NULL_TOKENS:
+        return 0.0 if s in ("--", "-") else np.nan
+    s = s.replace("\u00a0", "").replace("\u202f", "")  # NBSP / narrow NBSP
+    s = s.replace("\u2212", "-")  # unicode minus
+    s = re.sub(r"^[^\d+\-.,]+|[^\d]+$", "", s)  # leading/trailing currency & units
+    if not s:
+        return np.nan
+    if european:
+        # EU: '.' groups thousands, ',' is the decimal point
+        if "," in s and "." in s:
+            s = s.replace(".", "").replace(",", ".")
+        elif "," in s:
+            frac = s.rsplit(",", 1)[1]
+            # only treat as decimal when unambiguous; otherwise thousands group
+            if len(frac) == 3 and s.count(",") == 1 and re.fullmatch(r"[+-]?\d{1,3},\d{3}", s):
+                s = s.replace(",", "")
+            else:
+                s = s.replace(",", ".")
+        elif re.fullmatch(r"[+-]?\d{1,3}(\.\d{3})+", s):
+            s = s.replace(".", "")
+    else:
+        # US: ',' groups thousands, '.' is the decimal point
+        s = s.replace(",", "")
+    try:
+        return float(s)
+    except ValueError:
+        return np.nan
+
+
 def _clean_numeric_series(s: pd.Series) -> pd.Series:
+    """Coerce a column to float, auto-detecting US vs European conventions.
+
+    A column is treated as European when several of its numeric-looking cells
+    unambiguously follow EU conventions (comma decimal / dot grouping).  Cells
+    that cannot be parsed become NaN; callers decide whether that is an error.
+    """
     if pd.api.types.is_numeric_dtype(s):
         return s.astype(float)
-    cleaned = (
-        s.astype(str)
-        .str.strip()
-        .replace({"--": "0", "": np.nan, "nan": np.nan, "None": np.nan})
-        .str.replace(",", "", regex=False)
+    raw = [str(v) for v in s.tolist() if v is not None]
+    european = _looks_european(raw)
+    return pd.Series(
+        [_parse_numeric_token(v, european) for v in s.tolist()],
+        index=s.index,
+        dtype="float64",
     )
-    return pd.to_numeric(cleaned, errors="coerce").astype(float)
 
 
 def _find_header_row(rows: list[list[str]], extra_tokens: tuple[str, ...] = ()) -> int:
@@ -107,22 +226,63 @@ def _match_column(
         for col, low in lower_map.items():
             if low == syn:
                 return col
-    # Substring pass (avoid matching 'id' inside 'paid' or 'valid')
-    for syn in synonyms:
+    # Word-boundary pass: avoid matching 'id' inside 'paid'/'valid' and
+    # 'date' inside 'update'.  Longest synonyms win, so "conversion date"
+    # beats "date" when both could apply to the same header.
+    #
+    # Boundary rules (issue #2):
+    #   * a synonym may not start in the middle of a word  -> (?<![0-9a-z])
+    #   * its end must not fall inside a word, but a plural 's' is allowed
+    #     ("conversions" matches "conversion", "orders" matches "order")
+    #   * a trailing number is allowed when the synonym ends in a word like
+    #     "drill-down" ("Source Drill-Down 1") or when it is the generic
+    #     "id" ("Session ID 2")
+    ordered = sorted(synonyms, key=len, reverse=True)
+    for syn in ordered:
+        pat = re.compile(r"(?<![0-9a-z])" + re.escape(syn) + r"(?![0-9a-z])")
+        loose = re.compile(
+            r"(?<![0-9a-z])" + re.escape(syn) + r"(?:s)?(?![0-9a-z])(?![0-9a-z]*[a-z])"
+        )
         for col, low in lower_map.items():
             if syn == "id":
-                if low == "id" or low.endswith("_id") or low.endswith(" id"):
+                if (
+                    low == "id"
+                    or low.endswith("_id")
+                    or low.endswith(" id")
+                    or re.search(r"(?<![0-9a-z])id(?:s)?(?:[ _-]?\d+)?$", low)
+                ):
                     return col
-            elif syn in low:
+            elif pat.search(low) or loose.search(low):
+                return col
+            elif re.search(r"(?<![0-9a-z])" + re.escape(syn) + r"(?:s)?[ _-]?\d+$", low):
+                # trailing numeric suffix: "Source Drill-Down 2", "Channel Grouping 1"
+                return col
+    # Last-resort plain substring pass (kept for backwards compatibility with
+    # headers like 'utmsource' that have no separators).
+    for syn in ordered:
+        for col, low in lower_map.items():
+            if syn == "id":
+                continue
+            if syn in low:
                 return col
     return None
 
 
+_ISO_DATE_HEADER_RE = re.compile(r"^\s*\d{4}[-/.]\d{1,2}[-/.]\d{1,2}(?:[ T].*)?$")
+
+
 def _is_pivot_table(df: pd.DataFrame) -> bool:
-    if len(df.columns) < 4:
+    if len(df.columns) < 3:
         return False
-    sample = list(df.columns[1:12])
+    sample = [str(c) for c in df.columns[1:12]]
+    if not sample:
+        return False
+    # ISO headers (2026-01-01) are unambiguous; count them explicitly because
+    # pandas' mixed-format parser can reject them when other headers are not
+    # dates (issue #2: GA4 wide exports with "Channel Grouping" first column).
+    iso = sum(1 for c in sample if _ISO_DATE_HEADER_RE.match(c))
     parsed = pd.to_datetime(pd.Series(sample), errors="coerce", format="mixed").notna().sum()
+    parsed = max(int(parsed), iso)
     return parsed > len(sample) * 0.5
 
 
@@ -133,8 +293,52 @@ def _has_time_of_day(series: pd.Series) -> bool:
     return bool(sample.str.contains(r"[T\s]\d{1,2}:\d{2}", regex=True).any())
 
 
+_DMY_RE = re.compile(r"^\s*(\d{1,2})[/.\-](\d{1,2})[/.\-](\d{4})(?:[ T].*)?$")
+_YMD_RE = re.compile(r"^\s*(\d{4})[/.\-](\d{1,2})[/.\-](\d{1,2})(?:[ T].*)?$")
+
+
+def _parse_localized_dates(series: pd.Series) -> pd.Series:
+    """Parse day-first (DD/MM/YYYY) and ISO (YYYY-MM-DD) strings unambiguously.
+
+    ``pandas.to_datetime`` reads ``03/04/2026`` month-first (Mar 4), which is
+    wrong for European exports (3 April).  Rows whose day/month layout is
+    unambiguous are parsed explicitly; anything else is left to the caller.
+    Returns a datetime64 Series with NaT where a value was not recognized.
+    """
+    out = []
+    for value in series.astype(str):
+        s = value.strip()
+        m = _YMD_RE.match(s)
+        if m:
+            y, mo, d = (int(x) for x in m.groups())
+            out.append(pd.Timestamp(year=y, month=mo, day=d))
+            continue
+        m = _DMY_RE.match(s)
+        if m:
+            a, b, y = (int(x) for x in m.groups())
+            # a/b : if a > 12 it must be the day (day-first); if b > 12 it must be
+            # the month (month-first, e.g. US 04/13/2026). Ambiguous -> day-first,
+            # matching the European locale this adapter targets.
+            if a > 12 and b <= 12:
+                d, mo = a, b
+            elif b > 12 and a <= 12:
+                mo, d = a, b
+            else:
+                d, mo = a, b
+            try:
+                out.append(pd.Timestamp(year=y, month=mo, day=d))
+            except ValueError:
+                out.append(pd.NaT)
+            continue
+        out.append(pd.NaT)
+    return pd.Series(out, index=series.index, dtype="datetime64[ns]")
+
+
 def _normalize_dates(series: pd.Series, source_tz: str, ads_tz: str, is_row_level: bool) -> pd.Series:
     if not is_row_level:
+        localized = _parse_localized_dates(series)
+        if localized.notna().all():
+            return localized.dt.normalize()
         dt = pd.to_datetime(series, errors="coerce", format="mixed")
         return dt.dt.normalize()
 
@@ -318,7 +522,11 @@ def load_evc(source: str | Path | pd.DataFrame, config: Config | None = None) ->
         else:
             raise ValueError(f"Could not detect EVC column in {cols}. Pass --evc-column.")
 
-    dates = pd.to_datetime(df[date_col], errors="coerce", format="mixed").dt.normalize()
+    dates = _parse_localized_dates(df[date_col])
+    if dates.isna().any():
+        fallback = pd.to_datetime(df[date_col], errors="coerce", format="mixed")
+        dates = dates.fillna(fallback)
+    dates = dates.dt.normalize()
     vals = _clean_numeric_series(df[evc_col]).fillna(0.0)
     clean = pd.DataFrame({"date": dates, "evc": vals}).dropna(subset=["date"])
     series = clean.groupby("date")["evc"].sum().sort_index().astype(float)
